@@ -6,6 +6,7 @@ class QToolButton;
 class QAction;
 class QMenu;
 class QPushButton;
+class QtColorPicker;
 
 class MainWindow : public QWidget
 {
@@ -31,5 +32,6 @@ private:
     QAction     *m_add_act;
     QMenu       *m_menu   ;
 
+    QtColorPicker *m_color_button;
 };
 

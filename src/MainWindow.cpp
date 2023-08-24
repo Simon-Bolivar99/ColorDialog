@@ -1,5 +1,5 @@
 #include "include/MainWindow.h"
-#include "include/UserMenu.h"
+#include "libs/qtcolorpicker.h"
 
 #include <QToolButton>
 #include <QHBoxLayout>
@@ -32,14 +32,11 @@ void MainWindow::createGui()
     m_menu_button2 = new QPushButton("2");
     m_menu_button3 = new QPushButton("3");
 
+    m_color_button = new QtColorPicker(this,false);
+        m_tbutton->setPopupMode(QToolButton::DelayedPopup);
     auto m_layout = new QHBoxLayout();
-        m_layout->addWidget(m_tbutton);
-
-    m_menu = new QMenu;
-        m_menu->addAction(m_add_act);
-        m_menu->addSeparator();
-        m_menu->addAction(m_rm_act);
-        m_tbutton->setMenu(m_menu);
+        m_layout->addWidget(m_color_button);
+        //m_layout->addWidget(m_tbutton);
 
     setLayout(m_layout);
 }
@@ -51,7 +48,7 @@ void MainWindow::connectSignals()
 
 void MainWindow::createActions()
 {
-    m_rm_act = new QAction(tr("&Удалить11111111111111111111111111111111111111111111111111111111111111111"),this);
+    m_rm_act = new QAction(tr("&Удалить"),this);
     m_add_act = new QAction(tr("&Добавить"),this);
 }
 
