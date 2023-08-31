@@ -17,10 +17,6 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 set(PROJECT_SOURCES
         src/main.cpp
         src/MainWindow.cpp
-        src/ToolColorButton.cpp
-        libs/qtcolorpicker.cpp
-        libs/qtcolorpicker.h
-        include/ToolColorButton.h
         include/MainWindow.h
         res/res.qrc
 
