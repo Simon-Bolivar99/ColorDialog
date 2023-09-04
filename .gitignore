@@ -32,6 +32,8 @@ qrc_*.cpp
 Thumbs.db
 *.res
 *.rc
+CMakeLists.txt.user.042d14c 
+CMakeLists.txt.user 
 /.qmake.cache
 /.qmake.stash
 
