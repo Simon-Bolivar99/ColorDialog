@@ -125,13 +125,16 @@ void MainWindow::createActions()
 
 void MainWindow::buttonClick()
 {
-     icon_color = QColorDialog::getColor(Qt::black,this);
+     QColorDialog color_dialog;
+     const QColorDialog::ColorDialogOptions options = QFlag(QColorDialog::DontUseNativeDialog);
+     icon_color = color_dialog.getColor(Qt::black,this, "Select Color",options);
      createIcon(icon_color);
 }
 
 void MainWindow::createIcon(QColor color)
 {
     QPixmap button_icon(QSize(56,36));
+    icon_color = color;
     button_icon.fill(color);
     m_color_button->setIcon(QIcon(button_icon));
 }
