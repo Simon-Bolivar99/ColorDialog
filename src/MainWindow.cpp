@@ -127,8 +127,12 @@ void MainWindow::buttonClick()
 {
      QColorDialog color_dialog;
      const QColorDialog::ColorDialogOptions options = QFlag(QColorDialog::DontUseNativeDialog);
-     icon_color = color_dialog.getColor(Qt::black,this, "Select Color",options);
-     createIcon(icon_color);
+     QColor color = color_dialog.getColor(icon_color,this, "Select Color",options);
+     if (color.isValid()){
+         icon_color = color;
+         createIcon(icon_color);
+     }
+
 }
 
 void MainWindow::createIcon(QColor color)
