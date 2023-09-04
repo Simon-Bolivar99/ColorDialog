@@ -1,1 +1,1 @@
-# ColorDialog
+# ColorToolButton
