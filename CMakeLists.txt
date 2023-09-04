@@ -17,8 +17,9 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 set(PROJECT_SOURCES
         src/main.cpp
         src/MainWindow.cpp
+        src/ColorToolButton.cpp
         include/MainWindow.h
-        res/res.qrc
+        include/ColorToolButton.h
 
 
 )
