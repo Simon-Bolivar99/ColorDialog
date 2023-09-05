@@ -18,6 +18,7 @@ private:
     void connectSignals();
     void createActions();
     void buttonClick();
+    void updateColor();
     void createIcon(QColor color);
 
 

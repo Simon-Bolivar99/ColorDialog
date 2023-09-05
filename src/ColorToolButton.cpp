@@ -74,8 +74,6 @@ void ColorToolButton::createActions()
     QPixmap pixmap(QSize(56,36));
     pixmap.fill(color_dialog->customColor(0));
         m_color_act1 = new QAction(QIcon(pixmap),tr("custom"),this);
-        pixmap.fill(Qt::black);
-        m_color_act1->setIcon(QIcon(pixmap));
     pixmap.fill(color_dialog->customColor(1));
         m_color_act2 = new QAction(QIcon(pixmap),tr("custom"),this);
     pixmap.fill(color_dialog->customColor(2));
@@ -122,7 +120,50 @@ void ColorToolButton::buttonClick()
          icon_color = color;
          createIcon(icon_color);
      }
+     updateColor();
 
+}
+
+void ColorToolButton::updateColor()
+{
+    QPixmap pixmap(QSize(56,36));
+
+    pixmap.fill(color_dialog->customColor(0));
+        m_color_act1->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(1));
+        m_color_act2->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(2));
+        m_color_act3->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(3));
+        m_color_act4->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(4));
+        m_color_act5->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(5));
+        m_color_act6->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(6));
+        m_color_act7->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(7));
+        m_color_act8->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(8));
+        m_color_act9->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(9));
+        m_color_act10->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(10));
+        m_color_act11->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(11));
+        m_color_act12->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(12));
+        m_color_act13->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(13));
+        m_color_act14->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(14));
+        m_color_act15->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(15));
+        m_color_act16->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(16));
+        m_color_act17->setIcon(QIcon(pixmap));
+    pixmap.fill(color_dialog->customColor(17));
+        m_color_act18->setIcon(QIcon(pixmap));
 
 }
 
