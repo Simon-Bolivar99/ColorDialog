@@ -23,11 +23,14 @@ private:
     void createActions();
     void buttonClick();
     void updateColor();
+    void createMenu(int size);
     void createIcon(QColor color);
 
 
 private:
-    QList <QAction*> m_color_act;
+    QList <QAction*> m_act;
+    QList <QColor>   m_color_act;
+
     QMenu       *m_menu   ;
     QColor      icon_color;
     QColorDialog *color_dialog;
