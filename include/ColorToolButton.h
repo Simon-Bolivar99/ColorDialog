@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QToolButton>
-
+#include <QList>
 
 class QAction;
 class QMenu;
@@ -27,9 +27,10 @@ private:
 
 
 private:
-    QAction *m_color_act[18];
+    QList <QAction*> m_color_act;
     QMenu       *m_menu   ;
     QColor      icon_color;
-
     QColorDialog *color_dialog;
+    int numColors;
+
 };

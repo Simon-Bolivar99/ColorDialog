@@ -5,7 +5,7 @@
 #include <QString>
 
 ColorToolButton::ColorToolButton(QWidget *parent)
-    : QToolButton(parent)
+    : QToolButton(parent), color_dialog (new QColorDialog()), numColors (color_dialog->customCount())
 {
     createActions();
     createGui();
@@ -21,7 +21,8 @@ void ColorToolButton::createGui()
     setPopupMode(QToolButton::DelayedPopup);
 
     m_menu = new QMenu;
-        for (int i =0;i<17;i++){
+        for (int i =0;i<numColors;i++){
+
             m_menu->addAction(m_color_act[i]);
         }
     setMenu(m_menu);
@@ -32,7 +33,7 @@ void ColorToolButton::connectSignals()
     connect(this, &QToolButton::clicked, this, &ColorToolButton::buttonClick);
 
     //ACTIONS
-    for (int i =0;i<17;i++){
+    for (int i =0;i<numColors;i++){
          connect(m_color_act[i], &QAction::triggered, this, [this](const int i){createIcon(color_dialog->customColor(i));});
     }
 }
@@ -40,11 +41,10 @@ void ColorToolButton::connectSignals()
 void ColorToolButton::createActions()
 {
 
-    color_dialog = new QColorDialog();
     QPixmap pixmap(QSize(56,36));
-    for (int i=0;i<17;i++){
+    for (int i=0;i<numColors;i++){
         pixmap.fill(color_dialog->customColor(i));
-        m_color_act[i]  = new QAction(QIcon(pixmap),tr(color_dialog->customColor(i).name().toUtf8()),this);
+        m_color_act.push_back(new QAction(QIcon(pixmap),tr(color_dialog->customColor(i).name().toUtf8()),this));
     }
 
 }
@@ -63,9 +63,10 @@ void ColorToolButton::buttonClick()
 void ColorToolButton::updateColor()
 {
     QPixmap pixmap(QSize(56,36));
-    for (int i =0;i<17;i++){
+    for (int i =0;i<numColors;i++){
         pixmap.fill(color_dialog->customColor(i));
             m_color_act[i]->setIcon(QIcon(pixmap));
+            m_color_act[i]->setText(tr(color_dialog->customColor(i).name().toUtf8()));
     }
 }
 
