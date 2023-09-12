@@ -23,13 +23,17 @@ private:
     void createActions();
     void buttonClick();
     void updateColor();
-    void createMenu(int size);
+    void createMenu();
     void createIcon(QColor color);
 
 
 private:
-    QList <QAction*> m_act;
-    QList <QColor>   m_color_act;
+    struct m_act_color{
+        QAction  *action;
+        QColor    color_act;
+        bool      visible;
+    };
+    QList <m_act_color> m_act;
 
     QMenu       *m_menu   ;
     QColor      icon_color;
