@@ -22,8 +22,9 @@ private:
     void connectSignals();
     void createActions();
     void buttonClick();
-    void updateColor();
-    void createMenu();
+    void updateColor();//изменение цветов после работы с диалоговым окном
+    void createMenu();//создание QMenu
+    void updateMenu();
     void createIcon(QColor color);
 
 
@@ -36,7 +37,7 @@ private:
     QList <m_act_color> m_act;
 
     QMenu       *m_menu   ;
-    QColor      icon_color;
+    QColor      icon_color; //цвет  ColorToolButton
     QColorDialog *color_dialog;
     int numColors;
 

@@ -59,7 +59,7 @@ void ColorToolButton::buttonClick()
          createIcon(icon_color);
      }
      updateColor();
-     createMenu();
+     updateMenu();
 
 }
 
@@ -92,6 +92,12 @@ void ColorToolButton::createMenu()
         }
     setMenu(m_menu);
 
+}
+
+void ColorToolButton::updateMenu()
+{
+    delete m_menu;
+    createMenu();
 }
 
 
