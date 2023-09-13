@@ -12,7 +12,7 @@ class ColorToolButton : public QToolButton{
 
 public:
     ColorToolButton(QWidget *parent = nullptr);
-    ~ColorToolButton() = default;
+    ~ColorToolButton();
 
 public:
     QColor getColor() {return icon_color;}
@@ -27,18 +27,21 @@ private:
     void updateMenu();
     void createIcon(QColor color);
 
+    void deleteActions();
 
 private:
-    struct m_act_color{
+    struct action_color_t{
         QAction  *action;
         QColor    color_act;
         bool      visible;
+
     };
-    QList <m_act_color> m_act;
+    QList <action_color_t> action_list;
 
     QMenu       *m_menu   ;
     QColor      icon_color; //цвет  ColorToolButton
     QColorDialog *color_dialog;
+
     int numColors;
 
 };

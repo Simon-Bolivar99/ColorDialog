@@ -8,13 +8,18 @@
 #include <QPainter>
 
 ColorToolButton::ColorToolButton(QWidget *parent)
-    : QToolButton(parent), color_dialog (new QColorDialog()), numColors (color_dialog->customCount())
+    :  color_dialog (new QColorDialog(this)), m_menu(new QMenu(this)), numColors (color_dialog->customCount())
 {
     createActions();
     createGui();
     connectSignals();
+
 }
 
+ColorToolButton::~ColorToolButton()
+{
+    deleteActions();
+}
 
 void ColorToolButton::createGui()
 {
@@ -22,7 +27,9 @@ void ColorToolButton::createGui()
         button_icon.fill(color_dialog->customColor(0));
         QPainter p(&button_icon);
         p.drawRect(0,0,55,35);
-    setIcon(QIcon(button_icon));
+        setIcon(QIcon(button_icon));
+        //iconSize(QSize(height()*0.4 , width()*0.4));
+        QIcon(Normal);
     setPopupMode(QToolButton::DelayedPopup);
     createMenu();
 }
@@ -31,14 +38,13 @@ void ColorToolButton::connectSignals()
 {
     connect(this, &QToolButton::clicked, this, &ColorToolButton::buttonClick);
 
-    for (int i = 0; i <m_act.size(); i++){
-         connect(m_act[i].action, &QAction::triggered, this, [this, i](bool checked) {
+    for (int i = 0; i <action_list.size(); i++){
+         connect(action_list[i].action, &QAction::triggered, this, [this, i](bool checked) {
              Q_UNUSED(checked)
 
              createIcon(color_dialog->customColor(i));
          });
     }
-
 }
 
 void ColorToolButton::createActions()
@@ -49,7 +55,7 @@ void ColorToolButton::createActions()
         pixmap.fill(color_dialog->customColor(i));
         QPainter p(&pixmap);
         p.drawRect(0,0,55,35);
-        m_act.push_back({new QAction(QIcon(pixmap),tr(color_dialog->customColor(i).name().toUtf8()),this),
+        action_list.push_back({new QAction(QIcon(pixmap),tr(color_dialog->customColor(i).name().toUtf8()),this),
                          color_dialog->customColor(i),
                          false});
     }
@@ -72,31 +78,30 @@ void ColorToolButton::buttonClick()
 void ColorToolButton::updateColor()
 {
     QPixmap pixmap(QSize(56,36));
-    for (int i =0;i<m_act.size();i++){
-        m_act[i].color_act=color_dialog->customColor(i);
-        pixmap.fill(m_act[i].color_act);
+    for (int i =0;i<action_list.size();i++){
+        action_list[i].color_act=color_dialog->customColor(i);
+        pixmap.fill(action_list[i].color_act);
             QPainter p(&pixmap);
             p.drawRect(0,0,55,35);
-            m_act[i].action->setIcon(QIcon(pixmap));
-            m_act[i].action->setText(tr(m_act[i].color_act.name().toUtf8()));
+            action_list[i].action->setIcon(QIcon(pixmap));
+            action_list[i].action->setText(tr(action_list[i].color_act.name().toUtf8()));
     }
 }
 
 void ColorToolButton::createMenu()
 {
-    m_menu = new QMenu;
-        for (int i =0;i<m_act.size();i++){
+        for (int i =0;i<action_list.size();i++){
             for (int j = 0; j<i;j++){
-                if(m_act[i].color_act == m_act[j].color_act)
+                if(action_list[i].color_act == action_list[j].color_act)
                 {
-                    m_act[i].visible = false;
+                    action_list[i].visible = false;
                     break;
                 }
                 else
-                    m_act[i].visible = true;
+                    action_list[i].visible = true;
             }
-            if(m_act[i].visible == true || i == 0)
-                m_menu->addAction(m_act[i].action);
+            if(action_list[i].visible == true || i == 0)
+                m_menu->addAction(action_list[i].action);
         }
     setMenu(m_menu);
 
@@ -104,7 +109,7 @@ void ColorToolButton::createMenu()
 
 void ColorToolButton::updateMenu()
 {
-    delete m_menu;
+    m_menu->clear();
     createMenu();
 }
 
@@ -118,6 +123,12 @@ void ColorToolButton::createIcon(QColor color)
         QPainter p(&button_icon);
         p.drawRect(0,0,55,35);
 
-    setIcon(QIcon(button_icon));
+        setIcon(QIcon(button_icon));
+}
+
+void ColorToolButton::deleteActions()
+{
+    for (int i = 0;i<numColors;i++)
+      delete[]  action_list[i].action;
 }
 

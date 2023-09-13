@@ -19,14 +19,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete m_color_button;
 }
 
 void MainWindow::createGui()
 {
     m_color_button = new ColorToolButton();
+    //m_color_button->setFixedSize(QSize (150,150));
     auto m_layout = new QHBoxLayout();
         m_layout->addWidget(m_color_button);
-
     setLayout(m_layout);
 }
 
