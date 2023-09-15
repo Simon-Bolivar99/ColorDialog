@@ -120,14 +120,20 @@ void ColorToolButton::updateMenu()
 
 void ColorToolButton::createIcon(QColor color, const QSize& sz)
 {
-    QPixmap button_icon(sz);
-        button_icon.fill(color);
-        QPainter p(&button_icon);
-        p.drawRect(0,0, sz.width()-1, sz.height()-1);
+    QPixmap pixmap(sz);
+           pixmap.fill(color);
+           QPainter p(&pixmap);
+           p.drawRect(0,0, sz.width()-1, sz.height()-1);
 
-    setIcon(button_icon);
-    setIconSize({static_cast<int>(sz.width()*0.4),
-                 static_cast<int>(sz.height()*0.4)});
+       auto icon = QIcon();
+           icon.addPixmap(pixmap, QIcon::Mode::Active);
+           icon.addPixmap(pixmap, QIcon::Mode::Selected);
+           icon.addPixmap(pixmap, QIcon::Mode::Normal);
+           icon.addPixmap(pixmap, QIcon::Mode::Disabled); // ?
+
+       setIcon(icon);
+       setIconSize({static_cast<int>(sz.width()*0.4),
+                    static_cast<int>(sz.height()*0.4)});
 }
 
 void ColorToolButton::deleteActions()
