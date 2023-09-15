@@ -7,8 +7,11 @@
 #include <QList>
 #include <QPainter>
 
+#include <QDebug>
+
 ColorToolButton::ColorToolButton(QWidget *parent)
-    :  color_dialog (new QColorDialog(this)), m_menu(new QMenu(this)), numColors (color_dialog->customCount())
+    :  ColorDialog (new QColorDialog(this)), Menu(new QMenu(this)), numColors (ColorDialog->customCount()),
+      IconColor(ColorDialog->customColor(0)),  sz (size())
 {
     createActions();
     createGui();
@@ -23,13 +26,7 @@ ColorToolButton::~ColorToolButton()
 
 void ColorToolButton::createGui()
 {
-    QPixmap button_icon(QSize(56,36));
-        button_icon.fill(color_dialog->customColor(0));
-        QPainter p(&button_icon);
-        p.drawRect(0,0,55,35);
-        setIcon(QIcon(button_icon));
-        //iconSize(QSize(height()*0.4 , width()*0.4));
-        QIcon(Normal);
+    createIcon(IconColor, {56, 56});
     setPopupMode(QToolButton::DelayedPopup);
     createMenu();
 }
@@ -39,10 +36,10 @@ void ColorToolButton::connectSignals()
     connect(this, &QToolButton::clicked, this, &ColorToolButton::buttonClick);
 
     for (int i = 0; i <action_list.size(); i++){
-         connect(action_list[i].action, &QAction::triggered, this, [this, i](bool checked) {
+         connect(action_list[i].Action, &QAction::triggered, this, [this, i](bool checked) {
              Q_UNUSED(checked)
-
-             createIcon(color_dialog->customColor(i));
+             IconColor = ColorDialog->customColor(i);
+             createIcon(ColorDialog->customColor(i),sz);
          });
     }
 }
@@ -52,23 +49,30 @@ void ColorToolButton::createActions()
 
     QPixmap pixmap(QSize(56,36));
     for (int i=0;i<numColors;i++){
-        pixmap.fill(color_dialog->customColor(i));
+        pixmap.fill(ColorDialog->customColor(i));
         QPainter p(&pixmap);
         p.drawRect(0,0,55,35);
-        action_list.push_back({new QAction(QIcon(pixmap),tr(color_dialog->customColor(i).name().toUtf8()),this),
-                         color_dialog->customColor(i),
+        action_list.push_back({new QAction(QIcon(pixmap),tr(ColorDialog->customColor(i).name().toUtf8()),this),
+                         ColorDialog->customColor(i),
                          false});
     }
+
+}
+
+void ColorToolButton::resizeEvent(QResizeEvent *e)
+{
+    sz = size();
+    createIcon(IconColor, sz);
 
 }
 
 void ColorToolButton::buttonClick()
 {
      const QColorDialog::ColorDialogOptions options = QFlag(QColorDialog::DontUseNativeDialog);
-     QColor color = color_dialog->getColor(icon_color,this, "Select Color",options);
+     QColor color = ColorDialog->getColor(IconColor,this, "Select Color",options);
      if (color.isValid()){
-         icon_color = color;
-         createIcon(icon_color);
+         IconColor = color;
+         createIcon(IconColor, sz);
      }
      updateColor();
      updateMenu();
@@ -79,12 +83,12 @@ void ColorToolButton::updateColor()
 {
     QPixmap pixmap(QSize(56,36));
     for (int i =0;i<action_list.size();i++){
-        action_list[i].color_act=color_dialog->customColor(i);
-        pixmap.fill(action_list[i].color_act);
+        action_list[i].ActionColor=ColorDialog->customColor(i);
+        pixmap.fill(action_list[i].ActionColor);
             QPainter p(&pixmap);
             p.drawRect(0,0,55,35);
-            action_list[i].action->setIcon(QIcon(pixmap));
-            action_list[i].action->setText(tr(action_list[i].color_act.name().toUtf8()));
+            action_list[i].Action->setIcon(QIcon(pixmap));
+            action_list[i].Action->setText(tr(action_list[i].ActionColor.name().toUtf8()));
     }
 }
 
@@ -92,43 +96,43 @@ void ColorToolButton::createMenu()
 {
         for (int i =0;i<action_list.size();i++){
             for (int j = 0; j<i;j++){
-                if(action_list[i].color_act == action_list[j].color_act)
+                if(action_list[i].ActionColor == action_list[j].ActionColor)
                 {
-                    action_list[i].visible = false;
+                    action_list[i].Visible = false;
                     break;
                 }
                 else
-                    action_list[i].visible = true;
+                    action_list[i].Visible = true;
             }
-            if(action_list[i].visible == true || i == 0)
-                m_menu->addAction(action_list[i].action);
+            if(action_list[i].Visible == true || i == 0)
+                Menu->addAction(action_list[i].Action);
         }
-    setMenu(m_menu);
+    setMenu(Menu);
 
 }
 
 void ColorToolButton::updateMenu()
 {
-    m_menu->clear();
+    Menu->clear();
     createMenu();
 }
 
 
-void ColorToolButton::createIcon(QColor color)
+void ColorToolButton::createIcon(QColor color, const QSize& sz)
 {
-    QPixmap button_icon(QSize(56,36));
-
-        icon_color = color;
+    QPixmap button_icon(sz);
         button_icon.fill(color);
         QPainter p(&button_icon);
-        p.drawRect(0,0,55,35);
+        p.drawRect(0,0, sz.width()-1, sz.height()-1);
 
-        setIcon(QIcon(button_icon));
+    setIcon(button_icon);
+    setIconSize({static_cast<int>(sz.width()*0.4),
+                 static_cast<int>(sz.height()*0.4)});
 }
 
 void ColorToolButton::deleteActions()
 {
     for (int i = 0;i<numColors;i++)
-      delete[]  action_list[i].action;
+      delete[]  action_list[i].Action;
 }
 

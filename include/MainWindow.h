@@ -20,7 +20,7 @@ private:
 
 private:
 
-    ColorToolButton *m_color_button;
+    ColorToolButton *ColorButton;
 
 };
 
