@@ -139,6 +139,6 @@ void ColorToolButton::createIcon(QColor color, const QSize& sz)
 void ColorToolButton::deleteActions()
 {
     for (int i = 0;i<numColors;i++)
-      delete[]  action_list[i].Action;
+      delete  action_list[i].Action;
 }
 
